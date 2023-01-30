@@ -35,3 +35,19 @@ app.get("/players/", async (request, response) => {
 
   //response.send("Hey");
 });
+
+//2 GET
+app.get("/players/:playerId/", async (request, response) => {
+  const { playerId } = request.params;
+  const forQuery2 = `SELECT * FROM player_details
+    WHERE player_id=${playerId}; 
+    `;
+  const forFun = (res) => {
+    return {
+      playerId: res.player_id,
+      playerName: res.player_name,
+    };
+  };
+  const res = await appDB.get(forQuery2);
+  response.send(forFun(res));
+});
