@@ -104,12 +104,11 @@ app.get("/players/:playerId/matches", async (request, response) => {
 //6
 app.get("/matches/:matchId/players", async (request, response) => {
   const { matchId } = request.params;
-  const Query6 = `SELECT DISTINCT player_details.player_id,player_details.player_name FROM  player_details
-    NATURAL JOIN 
-    player_match_score;
 
-    WHERE player_match_score.match_id=${matchId};
-    `;
+  const Query6 = `SELECT player_id,
+           player_name
+    FROM player_details NATURAL JOIN player_match_score
+    WHERE match_id = '${matchId}';`;
   const players = await appDB.all(Query6);
   const forFunctioning = (every) => {
     return {
@@ -148,5 +147,4 @@ app.get("/players/:playerId/playerScores", async (request, response) => {
   console.log(playerScores);
   response.send(playerScores);
 });
-
 module.exports = app;
